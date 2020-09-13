@@ -13,6 +13,13 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (savedInstanceState == null) {
+            ArticleListFragment fragment = new ArticleListFragment();
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment, ArticleListFragment.TAG).commit();
+        }
     }
 
     @Override
