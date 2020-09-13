@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pof.jettravel.R;
-import com.pof.jettravel.data.model.Article;
+import com.pof.jettravel.data.model.model.Article;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         this.context = context;
     }
 
-    public void updateGitCommitList(List<Article> articles) {
+    public void updateArticleList(List<Article> articles) {
         listArticles = articles;
         notifyDataSetChanged();
     }

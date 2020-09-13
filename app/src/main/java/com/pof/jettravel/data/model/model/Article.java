@@ -1,4 +1,4 @@
-package com.pof.jettravel.data.model;
+package com.pof.jettravel.data.model.model;
 
 import java.util.Date;
 import java.util.List;

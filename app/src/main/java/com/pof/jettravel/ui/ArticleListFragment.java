@@ -1,11 +1,14 @@
 package com.pof.jettravel.ui;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pof.jettravel.R;
+import com.pof.jettravel.controller.ArticleViewModel;
+import com.pof.jettravel.data.model.model.Article;
+
+import java.util.List;
 
 public class ArticleListFragment extends Fragment {
 
@@ -39,13 +46,27 @@ public class ArticleListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        final ArticleViewModel viewModel = ViewModelProviders.of(this).get(ArticleViewModel.class);
+        viewModel.getArticleLiveData().observe(this, new Observer<List<Article>>() {
+            @Override
+            public void onChanged(@Nullable List<Article> articles) {
+                if(articles!=null) {
+                    articleListAdapter.updateArticleList(articles);
+                    Log.d("Article list fragment", "adapter updated with new list");
+                } else {
+                    ErrorHandling.showToast(getActivity(),"Something went wrong...Try again later");
+                    txtErrorMsg.setVisibility(View.VISIBLE);
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         MainActivity mainActivity = (MainActivity)context;
-        callback = (Callback)mainActivity;
     }
 
     public interface Callback {
