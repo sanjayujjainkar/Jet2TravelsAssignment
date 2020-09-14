@@ -21,6 +21,7 @@ public class Repository {
     private static Repository repository;
     private RetrofitService retrofitService;
     private String TAG = Repository.class.getSimpleName();
+    private final MutableLiveData<List<Article>> liveData = new MutableLiveData<>();
 
     private Repository(){
 
@@ -53,11 +54,10 @@ public class Repository {
         return repository;
     }
 
+    public LiveData<List<Article>> getArticles(int page) {
 
-    public LiveData<List<Article>> getArticles() {
-        final MutableLiveData<List<Article>> liveData = new MutableLiveData<>();
 
-        retrofitService.getArticles("1","10").enqueue(new Callback<List<Article>>() {
+        retrofitService.getArticles(page+"","10").enqueue(new Callback<List<Article>>() {
             @Override
             public void onResponse(Call<List<Article>> call, Response<List<Article>> response) {
                 liveData.setValue(response.body());

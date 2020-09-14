@@ -14,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pof.jettravel.R;
 import com.pof.jettravel.controller.ArticleViewModel;
+import com.pof.jettravel.data.model.Repository;
 import com.pof.jettravel.data.model.model.Article;
 
 import java.util.List;
@@ -29,6 +31,7 @@ public class ArticleListFragment extends Fragment {
     private TextView txtErrorMsg;
     private Callback callback;
     public static String TAG = "ArticleListFragment";
+    private int page=1;
 
     @Nullable
     @Override
@@ -40,6 +43,20 @@ public class ArticleListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.commit_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(articleListAdapter);
+
+        //====================
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+                    Log.d("RecycleView","end");
+                    Toast.makeText(getActivity(), "Loading next page...", Toast.LENGTH_SHORT).show();
+                    Repository.getInstance().getArticles(++page);
+                }
+            }
+        });
+
         return view;
     }
 

@@ -27,7 +27,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     }
 
     public void updateArticleList(List<Article> articles) {
-        listArticles = articles;
+        listArticles.addAll(articles);
         notifyDataSetChanged();
     }
 
